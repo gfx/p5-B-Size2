@@ -167,11 +167,17 @@ sub B::HV::sizeval {
 }
 
 sub B::IV::sizeval {
-    shift->IV;
+    my($sv) = @_;
+    return $sv->FLAGS & (B::SVf_IOK|B::SVp_IOK)
+        ? $sv->IV
+        : B::NULL::sizeval($sv);
 }
 
 sub B::NV::sizeval {
-    shift->NV;
+    my($sv) = @_;
+    return $sv->FLAGS & (B::SVf_NOK|B::SVp_NOK)
+        ? $sv->NV
+        : B::NULL::sizeval($sv);
 }
 
 sub B::NULL::sizeval {
