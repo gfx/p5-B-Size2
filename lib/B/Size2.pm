@@ -13,7 +13,7 @@ use XSLoader ();
 use B ();
 
 BEGIN {
-    our $VERSION = '2.01';
+    our $VERSION = '2.02';
 
     XSLoader::load(__PACKAGE__, $VERSION);
 }
@@ -22,6 +22,16 @@ BEGIN {
     no warnings qw (redefine prototype);
     *B::OP::size   = \&B::Sizeof::OP;
     *B::UNOP::size = \&B::Sizeof::UNOP;
+}
+
+use constant _CHECK_SVPAD_OUR_FOR_MAGIC => $] < 5.016;
+
+use constant _SVpad_NAME => 0x40000000; # sv.h
+use constant _SVpad_OUR  => 0x00040000; # sv.h
+
+sub _SvPAD_OUR { # see SvPAD_OUR()@sv.h
+    my($sv) = @_;
+    return ($sv->FLAGS() & _SVpad_NAME|_SVpad_OUR) == (_SVpad_NAME|_SVpad_OUR);
 }
 
 sub B::SVOP::size {
@@ -79,9 +89,12 @@ sub B::PVLV::size {
 sub B::PVMG::size {
     my $sv = shift;
     my $size = B::Sizeof::SV + B::Sizeof::XPVMG;
-    my(@chain) = $sv->MAGIC;
-    for my $mg (@chain) {
-        $size += B::Sizeof::MAGIC + $mg->LENGTH;
+
+    if (_CHECK_SVPAD_OUR_FOR_MAGIC && !_SvPAD_OUR($sv)){
+        my(@chain) = $sv->MAGIC;
+        for my $mg (@chain) {
+            $size += B::Sizeof::MAGIC + $mg->LENGTH;
+        }
     }
     $size;
 }
