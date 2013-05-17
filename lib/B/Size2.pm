@@ -272,7 +272,7 @@ L<B::Size> - the original
 
 =head1 AUTHORS
 
-Fuji, Goro (gfx) E<LT>gfuji@cpan.orgE<gt>
+Fuji, Goro (gfx) E<lt>gfuji@cpan.orgE<gt>
 
 =head1 ORIGINAL AUTHORS
 
