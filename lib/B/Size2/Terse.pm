@@ -246,9 +246,11 @@ sub indent {
 
 #thanks B::Deparse
 sub padname {
-    my $obj = shift;
-    return '?' unless ref $obj;
-    my $str = $obj->PV;
+    my($sv) = @_;
+    if (!( ref $sv && $sv->FLAGS & (B::SVf_POK | B::SVp_POK) != 0 )) {
+        return '?';
+    }
+    my $str = $sv->PVX;
     my $ix = index($str, "\0");
     $str = substr($str, 0, $ix) if $ix != -1;
     return $str;
