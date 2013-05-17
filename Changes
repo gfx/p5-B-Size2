@@ -1,5 +1,8 @@
 Revision history of B::Size2
 
+2.03 2013-05-17 11:34:22
+    - Fix a SEGV about aelemfast (#1, thanks to hirose31)
+
 2.02 2013-02-01 15:08:51
 	- Fix a SEGV
 
