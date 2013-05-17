@@ -35,7 +35,13 @@ sub _SvPAD_OUR { # see SvPAD_OUR()@sv.h
 }
 
 sub B::SVOP::size {
-    B::Sizeof::SVOP + shift->sv->size;
+    my($op) = @_;
+    if ($op->desc eq 'constant array element') { # aelemfast
+        return B::Sizeof::SVOP;
+    }
+    else {
+        return B::Sizeof::SVOP + $op->sv->size;
+    }
 }
 
 sub B::GVOP::size {
