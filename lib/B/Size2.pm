@@ -244,7 +244,7 @@ my $esc = join '', keys %esc;
 
 sub escape_html {
     my $str = shift;
-    $$str =~ s/([$esc])/&$esc{$1};/go if $$str;
+    $$str =~ s/([$esc])/&$esc{$1};/g if $$str;
 }
 
 1;
@@ -256,7 +256,10 @@ B::Size2 - Measure size of Perl OPs and SVs
 
 =head1 SYNOPSIS
 
+  use B ();
   use B::Size2 ();
+
+  say B::svref_2object($value)->size;
 
 =head1 DESCRIPTION
 

@@ -211,7 +211,7 @@ my @curpad_names = ();
 sub init_curpad_names {
     my $cv = B::svref_2object(shift);
     my $padlist = $cv->PADLIST;
-    return if ref($padlist) eq 'B::SPECIAL';
+    return unless $padlist->isa('B::PADLIST');
     @curpad_names = ($padlist->ARRAY)[0]->ARRAY;
 }
 
@@ -403,11 +403,12 @@ sub PADLIST_size {
     my $cv = shift;
     my $obj = UNIVERSAL::isa($cv, "B::CV") ? $cv : B::svref_2object($cv);
 
+    if (! $obj->PADLIST->isa('B::PADLIST')) {
+        return $obj->size;
+    }
+
     my $size = (B::Sizeof::AV + B::Sizeof::XPVAV) * 3; #padlist, names, values
 
-    if ($obj->PADLIST->isa('B::SPECIAL')) {
-        return B::Sizeof::AV; #XXX???
-    }
 
     my($padnames, $padvals) = $obj->PADLIST->ARRAY;
     my @names = $padnames->ARRAY;

@@ -3,7 +3,7 @@ BEGIN {
 }
 
 use strict;
-use Test;
+use Test::More;
 
 use B::Size2 ();
 
@@ -12,8 +12,8 @@ my @subs;
 {
     package B::Sizeof;
     for (keys %B::Sizeof::) {
-	next unless defined &$_;
-	push @subs, "B::Sizeof::$_";
+        next unless defined &$_;
+        push @subs, "B::Sizeof::$_";
     }
 }
 
@@ -22,5 +22,6 @@ my $tests = @subs;
 plan tests => $tests;
 
 for (@subs) {
-    ok eval "&$_";
+    no strict 'refs';
+    ok $_->(), $_;
 }
