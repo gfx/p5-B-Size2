@@ -26,7 +26,7 @@ static int B__Size_SV_size(pTHX_ SV *sv)
     XPUSHs(sv_2mortal(newRV_inc(sv)));
     PUTBACK;
 
-    count = perl_call_pv("B::Size::SV_size", G_SCALAR);
+    count = call_pv("B::Size::SV_size", G_SCALAR);
 
     SPAGAIN;
 
@@ -196,22 +196,22 @@ static void boot_B_compat(pTHX)
     HV *b_stash = gv_stashpvn("B", 1, TRUE);
 
     /* these were not present until 5.005_58ish */
-    if (!perl_get_cv("B::PV::LEN", FALSE)) {
+    if (!get_cv("B::PV::LEN", FALSE)) {
         (void)newXS("B::PV::LEN", XS_B__PV_LEN, __FILE__);
     }
-    if (!perl_get_cv("B::PV::CUR", FALSE)) {
+    if (!get_cv("B::PV::CUR", FALSE)) {
         (void)newXS("B::PV::CUR", XS_B__PV_CUR, __FILE__);
     }
-    if (!perl_get_cv("B::MAGIC::LENGTH", FALSE)) {
+    if (!get_cv("B::MAGIC::LENGTH", FALSE)) {
         (void)newXS("B::MAGIC::LENGTH", XS_B__MAGIC_LENGTH, __FILE__);
     }
-    if (!perl_get_cv("B::OP::name", FALSE)) {
+    if (!get_cv("B::OP::name", FALSE)) {
         (void)newXS("B::OP::name", XS_B__OP_name, __FILE__);
     }
-    if (!perl_get_cv("B::SVf_POK", FALSE)) {
+    if (!get_cv("B::SVf_POK", FALSE)) {
     	(void)newCONSTSUB(b_stash, "SVf_POK", newSViv(SVf_POK));
     }
-    if (!perl_get_cv("B::SVf_FAKE", FALSE)) {
+    if (!get_cv("B::SVf_FAKE", FALSE)) {
     	(void)newCONSTSUB(b_stash, "SVf_FAKE", newSViv(SVf_FAKE));
     }
 }
