@@ -1,7 +1,12 @@
-#include "EXTERN.h"
-#include "perl.h"
-#include "XSUB.h"
+#define PERL_NO_GET_CONTEXT
+#include <EXTERN.h>
+#include <perl.h>
+#include <XSUB.h>
+#include <regcomp.h>
+
 #include "ppport.h"
+
+#include "b_sizeof.h"
 
 #ifndef PM_GETRE
 #define PM_GETRE(o) ((o)->op_pmregexp)
@@ -12,11 +17,7 @@ typedef OP    * B__OP;
 typedef PMOP  * B__PMOP;
 typedef MAGIC * B__MAGIC;
 
-#include "regcomp.h"
-
-#include "b_sizeof.c"
-
-static int B__Size_SV_size(SV *sv)
+static int B__Size_SV_size(pTHX_ SV *sv)
 {
     dSP;
     int count, retval;
@@ -40,6 +41,7 @@ static int B__Size_SV_size(SV *sv)
 
 static int REGEXP_size(PMOP *o)
 {
+    dTHX;
     REGEXP *rx = PM_GETRE(o);
     int retval = 0;
 
@@ -65,7 +67,7 @@ static int REGEXP_size(PMOP *o)
     	    switch (rx->data->what[n]) {
         	    case 's':
          	    case 'p':
-        	        retval += B__Size_SV_size((SV*)rx->data->data[n]);
+        	        retval += B__Size_SV_size(aTHX_ (SV*)rx->data->data[n]);
            	        break;
         	    case 'o':
         	        /*XXX: OP*/
@@ -79,10 +81,10 @@ static int REGEXP_size(PMOP *o)
     if (rx->substrs) {
 	    /* check_substr just points to anchor or float */
     	if (rx->anchored_substr) {
-    	    retval += B__Size_SV_size(rx->anchored_substr);
+    	    retval += B__Size_SV_size(aTHX_ rx->anchored_substr);
     	}
     	if (rx->float_substr) {
-    	    retval += B__Size_SV_size(rx->float_substr);
+    	    retval += B__Size_SV_size(aTHX_ rx->float_substr);
     	}
 
     	retval += sizeof(*rx->substrs);
@@ -189,7 +191,7 @@ static XS(XS_B__OP_name)
     XSRETURN(1);
 }
 
-static void boot_B_compat(void)
+static void boot_B_compat(pTHX)
 {
     HV *b_stash = gv_stashpvn("B", 1, TRUE);
 
@@ -222,8 +224,8 @@ MODULE = B::Size2   PACKAGE = B::Sizeof
 PROTOTYPES: disable
 
 BOOT:
-    boot_B_Sizeof();
-    boot_B_compat();
+    boot_B_Sizeof(aTHX);
+    boot_B_compat(aTHX);
 
 MODULE = B::Size2	PACKAGE = B::PMOP
 

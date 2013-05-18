@@ -60,7 +60,7 @@
 ## B::Size2
 
 Size2\.c$
-b_sizeof\.c$
+b_sizeof\.h$
 \.o$
 \.bs$
 \.swp$
