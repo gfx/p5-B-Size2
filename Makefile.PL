@@ -1,5 +1,6 @@
 use 5.008_001;
 use strict;
+use warnings;
 use ExtUtils::MakeMaker;
 
 open XS, ">b_sizeof.c" or die $!;
