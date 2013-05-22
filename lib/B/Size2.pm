@@ -263,15 +263,13 @@ B::Size2 - Measure size of Perl OPs and SVs
 
 =head1 DESCRIPTION
 
-I<< B::Size2 is a fork of B::Size 0.09 >>.
-
-See L<B::Size2::Terse>.
+I<< B::Size2 is a fork of B::Size 0.09 for maintainance >>.
 
 =head1 SEE ALSO
 
 L<B::Size2::Terse>
 
-L<B::Size> - the original
+L<B::Size> - the original version but no longer maintained
 
 =head1 AUTHORS
 
