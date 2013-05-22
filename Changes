@@ -1,5 +1,8 @@
 Revision history of B::Size2
 
+2.04 2013-05-22 14:53:14
+    - Make it work on 5.18.0
+
 2.03 2013-05-17 11:34:22
     - Fix a SEGV about aelemfast (#1, thanks to hirose31)
 

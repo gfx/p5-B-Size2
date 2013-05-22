@@ -211,8 +211,10 @@ my @curpad_names = ();
 sub init_curpad_names {
     my $cv = B::svref_2object(shift);
     my $padlist = $cv->PADLIST;
-    return unless $padlist->isa('B::PADLIST');
-    @curpad_names = ($padlist->ARRAY)[0]->ARRAY;
+    return unless $padlist->can('ARRAY');
+    my $padnames = ($padlist->ARRAY)[0];
+    return unless $padnames->can('ARRAY');
+    @curpad_names = $padnames->ARRAY;
 }
 
 sub compile {
@@ -431,7 +433,8 @@ sub PADLIST_size {
         my $is_fake = $names[$i]->FLAGS & B::SVf_FAKE;
         if ($is_fake) {
             $entsize += B::Sizeof::SV; # just a reference to outside scope
-            if (B::class($obj->OUTSIDE->GV) eq 'SPECIAL') {
+            my $outside = $obj->OUTSIDE;
+            if ($outside->can('GV') && B::class($outside->GV) eq 'SPECIAL') {
                 $filelex{ $obj->GV->STASH->NAME }->{ $names_pv[$i] } =
                   $vals[$i]->size;
             }
