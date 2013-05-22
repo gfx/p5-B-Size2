@@ -2,6 +2,9 @@ use 5.008_001;
 use strict;
 use warnings;
 use ExtUtils::MakeMaker;
+use Devel::PPPort;
+
+Devel::PPPort::WriteFile(); # ppport.h
 
 open XS, ">b_sizeof.h" or die $!;
 print XS <<'HEAD';
@@ -48,9 +51,19 @@ print XS "\n}\n";
 WriteMakefile(
     'NAME' => 'B::Size2',
     'VERSION_FROM' => 'lib/B/Size2.pm',
+    'AUTHOR' => 'Fuji, Goro (gfx) <gfuji@cpan.org>',
+
+    PREREQ_PM => {
+        'B' => 0,
+    },
 
     'CONFIGURE_REQUIRES' => {
+        'ExtUtils::MakeMaker' => 0,
         'Devel::PPPort' => '3.20',
+    },
+
+    'BUILD_REQUIRES' => {
+        'ExtUtils::ParseXS' => 0,
     },
 
     'TEST_REQUIRES' => {
@@ -58,6 +71,8 @@ WriteMakefile(
     },
 
     'OBJECT' => '$(O_FILES)',
+
+    LICENSE => 'perl',
 );
 
 sub newCONSTSUB {
