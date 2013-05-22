@@ -1,5 +1,8 @@
 Revision history of B::Size2
 
+2.05 2013-05-22 15:08:34
+    - Fix dependencies
+
 2.04 2013-05-22 14:53:14
     - Make it work on 5.18.0
 
