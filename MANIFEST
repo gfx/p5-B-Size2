@@ -9,8 +9,8 @@ MANIFEST.SKIP
 META.yml
 patches/b_clearsym_60.pat
 ppport.h
-README
 Size2.xs
 t/001.basic.t
 t/002.terse.t
+t/003.size.t
 typemap
