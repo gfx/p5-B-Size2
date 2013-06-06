@@ -16,7 +16,7 @@ use constant MP2        => ($ENV{MOD_PERL_API_VERSION} || 0) == 2 ? 1 : 0;
 use B ();
 use B::Size2 ();
 
-our $VERSION = "2.05";
+our $VERSION = "2.06";
 
 my $opcount;
 my $opsize;

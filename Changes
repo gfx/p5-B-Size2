@@ -1,5 +1,8 @@
 Revision history of B::Size2
 
+2.06 2013-06-05 20:32:14-0700
+    - Fix #2, tied arrays caused SEGV (hirose31++)
+
 2.05 2013-05-22 15:08:34
     - Fix dependencies
 

@@ -13,7 +13,7 @@ use XSLoader ();
 use B ();
 
 BEGIN {
-    our $VERSION = '2.05';
+    our $VERSION = '2.06';
 
     XSLoader::load(__PACKAGE__, $VERSION);
 }
