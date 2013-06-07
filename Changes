@@ -1,5 +1,8 @@
 Revision history of B::Size2
 
+2.07 2013-06-06 22:01:31-0700
+    - Fix #3, overloaded objects caused problems (hirose31++)
+
 2.06 2013-06-05 20:32:14-0700
     - Fix #2, tied arrays caused SEGV (hirose31++)
 

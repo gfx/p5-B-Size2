@@ -11,4 +11,5 @@ Size2.xs
 t/001.basic.t
 t/002.terse.t
 t/003.size.t
+t/004.issue3.t
 typemap
