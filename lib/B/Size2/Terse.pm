@@ -104,12 +104,14 @@ sub package_size {
 
         #measure global variables
         for my $type (qw(ARRAY HASH SCALAR)) {
-            no strict;
             next if $name =~ /::$/; #stash
             next unless /^[\w_]/;
             next if /^_</;
-            my $ref = *{$name}{$type};
-            next unless $ref;
+            my $ref = do {
+                no strict 'refs';
+                *{$name}{$type};
+            };
+            next unless defined $ref;
             my $obj = B::svref_2object($ref);
             next if ref($obj) eq 'B::NULL';
             my $tsize = $obj->size;

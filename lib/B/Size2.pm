@@ -102,7 +102,7 @@ sub B::PVMG::size {
             $size += B::Sizeof::MAGIC + $mg->LENGTH;
         }
     }
-    if (my $tied = tied(${ $sv->object_2svref })) {
+    if (defined(my $tied = tied(${ $sv->object_2svref }))) {
         return $size + B::svref_2object($tied)->size;
     }
     $size;
@@ -111,7 +111,7 @@ sub B::PVMG::size {
 sub B::AV::size {
     my $sv = shift;
     my $size = B::Sizeof::AV + B::Sizeof::XPVAV;
-    if (my $tied = tied(@{ $sv->object_2svref })) {
+    if (defined(my $tied = tied(@{ $sv->object_2svref }))) {
         return $size + B::svref_2object($tied)->size;
     }
     my @vals = $sv->ARRAY;
@@ -127,7 +127,7 @@ sub B::HV::size {
     my $size = B::Sizeof::HV + B::Sizeof::XPVHV;
     #$size += length($sv->NAME);
 
-    if (my $tied = tied(%{ $sv->object_2svref })) {
+    if (defined(my $tied = tied(%{ $sv->object_2svref }))) {
         return $size + B::svref_2object($tied)->size;
     }
 
